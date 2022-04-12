@@ -1,20 +1,27 @@
+import './global';
+import * as eva from '@eva-design/eva';
+import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { Navigation } from './navigation'
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  const isLoadingComplete = useCachedResources();
+  const colorScheme = useColorScheme();
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  if (!isLoadingComplete) {
+    return null;
+  } else {
+    return (      
+        <ApplicationProvider
+          {...eva}
+          theme={{...eva.dark, ...theme}}
+          customMapping={mapping}>
+          <IconRegistry icons={EvaIconsPack} />
+          <Navigation coloScheme={colorScheme} />
+          <StatusBar />
+        </ApplicationProvider>
+    );
+  }
+}
